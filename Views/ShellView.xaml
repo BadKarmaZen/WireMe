@@ -8,6 +8,22 @@
         mc:Ignorable="d"
         Title="ShellView" Height="600" Width="800">
 	<Grid>
-		<ContentControl cal:View.Model="{Binding ActiveItem}" Focusable="False"/>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Menu>
+			<MenuItem Header="_File">
+				<MenuItem Name="NewAction" Header="_New Project" />
+				<MenuItem Name="OpenAction" Header="_Open Project" />
+				<MenuItem Name="SaveAction" Header="_Save Project" />
+				<MenuItem Name="SaveAsAction" Header="Save Project _as" />
+				<Separator />
+				<MenuItem Name="CloseAction" Header="Close" />
+			</MenuItem>
+		</Menu>
+		
+		<ContentControl cal:View.Model="{Binding ActiveItem}" Focusable="False" Grid.Row="1"/>
 	</Grid>
 </Window>

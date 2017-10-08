@@ -7,6 +7,7 @@ using System.Windows;
 using Caliburn.Micro;
 using WireMe.Interfaces;
 using WireMe.Behaviors;
+using WireMe.Model.Project;
 
 namespace WireMe.ViewModels.Designer
 {
@@ -14,7 +15,7 @@ namespace WireMe.ViewModels.Designer
 	{
 		public string Id { get; set; }
 		public Type DragableDataType { get { return typeof(ToolItem); } }
-		public void Remove(object data) {}
+		public void Remove(object data) { }
 	}
 
 	public class CanvasItem : PropertyChangedBase
@@ -58,6 +59,14 @@ namespace WireMe.ViewModels.Designer
 
 	public class DesignerViewModel : Screen, IDropable
 	{
+		#region Members
+		private List<CanvasItem> _items = new List<CanvasItem>();
+
+		private Page _currentPage;
+		#endregion
+
+
+		#region Properties
 		public List<ToolItem> ToolItems
 		{
 			get
@@ -68,33 +77,64 @@ namespace WireMe.ViewModels.Designer
 			}
 		}
 
-		private List<CanvasItem> _items = new List<CanvasItem>();
-
-
 		public List<Type> DropableDataTypes { get; }
 
 		public List<CanvasItem> Items
 		{
-			get { return new List<CanvasItem>(_items); }
-		//	set { _items = value; }
+			get
+			{
+				var items = from i in _currentPage.Items
+										select new CanvasItem
+										{
+											X = i.X,
+											Y = i.Y,
+											Width = i.Width,
+											Height = i.Height
+										};
+				return items.ToList();
+			}
 		}
 
+		public bool LoadProject { get; internal set; }
+		#endregion
 
 		public DesignerViewModel()
 		{
-			DropableDataTypes = new List<Type> { typeof(ToolItem), typeof(DragWrapper)};
+			DropableDataTypes = new List<Type> { typeof(ToolItem), typeof(DragWrapper) };
+			_currentPage = new Page();
 		}
 
+		#region Actions
+		#endregion
+
+
+		#region Helpers
+
+		protected override void OnViewLoaded(object view)
+		{
+			if (LoadProject)
+			{
+				_currentPage = IoC.Get<IProjectManager>().CurrentProject.Pages.First();
+			}
+
+			NotifyOfPropertyChange((() => Items));
+			base.OnViewLoaded(view);
+		}
 
 		public void Drop(object data, object target, Point point)
 		{
-			_items.Add(new CanvasItem()
-			           {
-				           X = point.X,
-				           Y = point.Y,
-									 Width = 50,
-									 Height = 22
-			           });
+			var item = new PageItem
+			{
+				Name = Guid.NewGuid().ToString(),
+				X = point.X,
+				Y = point.Y,
+				Width = 50,
+				Height = 22
+			};
+
+			_currentPage.Add(item);
+
+			IoC.Get<IProjectManager>().CurrentProject.Add(_currentPage);
 
 			NotifyOfPropertyChange((() => Items));
 		}
@@ -113,5 +153,8 @@ namespace WireMe.ViewModels.Designer
 		{
 			return true;
 		}
+
+		#endregion
+		
 	}
 }

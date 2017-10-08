@@ -83,6 +83,11 @@
     <Compile Include="Helpers\WindowsPosition.cs" />
     <Compile Include="Interfaces\IDragable.cs" />
     <Compile Include="Interfaces\IDropable.cs" />
+    <Compile Include="Interfaces\IProjectManager.cs" />
+    <Compile Include="Model\Project\Page.cs" />
+    <Compile Include="Model\Project\PageItem.cs" />
+    <Compile Include="Model\Project\Project.cs" />
+    <Compile Include="Model\Project\ProjectManager.cs" />
     <Compile Include="ViewModels\Designer\DesignerViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\Designer\DesignerView.xaml.cs">
@@ -121,7 +126,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Snippits.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Colors.xaml">
       <SubType>Designer</SubType>

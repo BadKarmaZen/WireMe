@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using WireMe.ViewModels;
+using WireMe.Model.Project;
+using WireMe.Interfaces;
 
 namespace WireMe.Core
 {
@@ -28,6 +30,9 @@ namespace WireMe.Core
 			_simpleContainer.RegisterInstance(typeof(IEventAggregator), "IEventAggregator", new EventAggregator());
 			_simpleContainer.RegisterInstance(typeof(IWindowManager), "IWindowManager", new WindowManager());
 			_simpleContainer.RegisterSingleton(typeof(ShellViewModel), "ShellViewModel", typeof(ShellViewModel));
+
+
+			_simpleContainer.RegisterInstance(typeof(IProjectManager), "ProjectManager", new ProjectManager());
 
 			//_simpleContainer.RegisterInstance(typeof(ThemeManager), "ThemeManager", new ThemeManager());
 
