@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using WireMe.Interfaces;
+using WireMe.Behaviors;
 
 namespace WireMe.ViewModels.Designer
 {
 	public class ToolItem : IDragable
 	{
 		public string Id { get; set; }
-		public Type DragableDataType { get { return GetType(); } }
-		public void Remove(object data)
-		{
-			//	nothing to remove
-		}
+		public Type DragableDataType { get { return typeof(ToolItem); } }
+		public void Remove(object data) {}
 	}
 
 	public class CanvasItem : PropertyChangedBase
@@ -84,7 +82,7 @@ namespace WireMe.ViewModels.Designer
 
 		public DesignerViewModel()
 		{
-			DropableDataTypes = new List<Type> { typeof(ToolItem) };
+			DropableDataTypes = new List<Type> { typeof(ToolItem), typeof(DragWrapper)};
 		}
 
 

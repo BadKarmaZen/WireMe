@@ -78,6 +78,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\DragBehavior.cs" />
+    <Compile Include="Behaviors\DragWrapper.cs" />
     <Compile Include="Behaviors\DropBehavior.cs" />
     <Compile Include="Helpers\WindowsPosition.cs" />
     <Compile Include="Interfaces\IDragable.cs" />

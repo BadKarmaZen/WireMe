@@ -125,7 +125,8 @@ namespace WireMe.Behaviors
 			}
 			else
 			{
-				return e.Data.GetData(GetDataType(e));
+				//return e.Data.GetData(GetDataType(e));
+				return e.Data.GetData(typeof(DragWrapper));
 			}
 		}
 
@@ -185,7 +186,7 @@ namespace WireMe.Behaviors
 			Type dataType = GetDataType(e);
 			if (dataType != null)
 			{
-				Debug.WriteLine("Timer START");
+				//Debug.WriteLine("Timer START");
 				_openTimer.Start();
 
 				// can drop?
@@ -216,7 +217,7 @@ namespace WireMe.Behaviors
 			Point p = WindowsPosition.CorrectGetPosition(this.AssociatedObject);
 			if (_last.X != p.X || _last.Y != p.Y)
 			{
-				Debug.WriteLine("Timer RESET " + DateTime.Now);
+				//Debug.WriteLine("Timer RESET " + DateTime.Now);
 				_openTimer.Stop();
 				_openTimer.Start();
 				_last = p;
@@ -227,7 +228,7 @@ namespace WireMe.Behaviors
 
 		void AssociatedObject_DragLeave(object sender, DragEventArgs e)
 		{
-			Debug.WriteLine("Timer STOP");
+			//Debug.WriteLine("Timer STOP");
 			_openTimer.Stop();
 			_blinkTimer.Stop();
 			_blinkStopTimer.Stop();
@@ -245,7 +246,23 @@ namespace WireMe.Behaviors
 			Type dataType = GetDataType(e);
 			if (dataType != null)
 			{
-				GetDropable().Drop(_data, _target, _last);
+				DragWrapper wrapper = _data as DragWrapper;
+
+				if (wrapper != null)
+				{
+					Debug.WriteLine($"Drop {wrapper.DragInfo.LeftOffset},{wrapper.DragInfo.TopOffset}");
+					var pw = wrapper.DragInfo.PointToScreen(new Point(wrapper.DragInfo.LeftOffset, wrapper.DragInfo.TopOffset));
+
+					Debug.WriteLine($"-> screen :  {pw}");
+					var pc = _uiElement.PointToScreen(new Point(0,0));
+					Debug.WriteLine($"-> canvas :  {pc}");
+
+					GetDropable().Drop(wrapper.Item, _target, new Point(wrapper.DragInfo.LeftOffset-100, wrapper.DragInfo.TopOffset));
+				}
+				else
+				{
+					GetDropable().Drop(_data, _target, _last);
+				}
 			}
 
 			// remove adorner

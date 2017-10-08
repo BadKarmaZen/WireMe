@@ -128,12 +128,20 @@ namespace WireMe.Behaviors
 
 							// init adorner
 							Point pp = e.GetPosition(_el);
-							InitializeDragAdorner(this.AssociatedObject.DataContext, new Point(pp.X - _original.X, pp.Y - _original.Y));
+							Point newpoint = new Point(pp.X - _original.X, pp.Y - _original.Y);
+							InitializeDragAdorner(this.AssociatedObject.DataContext, newpoint );
 
 							// start dragging
 							DataObject data = new DataObject();
 							data.SetData(dragObject.DragableDataType, this.AssociatedObject.DataContext);
-							DragDropEffects effect = System.Windows.DragDrop.DoDragDrop(this.AssociatedObject, data, DragDropEffects.Move);
+							//DragDropEffects effect = System.Windows.DragDrop.DoDragDrop(this.AssociatedObject, data, DragDropEffects.Move);
+							DragDropEffects effect = System.Windows.DragDrop.DoDragDrop(this.AssociatedObject,
+								new DragWrapper
+								{
+									Item = data,
+									DragInfo = _itemAdorner
+								}, 
+								DragDropEffects.Move);
 
 							// done dragging
 							Mouse.Capture(null);
@@ -178,6 +186,7 @@ namespace WireMe.Behaviors
 		{
 			if (_itemAdorner != null)
 			{
+				Debug.WriteLine("UpdateDragAdorner " + currentPosition.X + "," + currentPosition.Y);
 				_itemAdorner.UpdatePosition(currentPosition.X, currentPosition.Y);
 			}
 		}

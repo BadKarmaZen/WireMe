@@ -12,7 +12,7 @@ namespace WireMe.Adorner
 {
 	public class DragAdorner : System.Windows.Documents.Adorner
 	{
-		#region sMember
+		#region Member
 
 		private ContentPresenter _contentPresenter;
 		private AdornerLayer _adornerLayer;
