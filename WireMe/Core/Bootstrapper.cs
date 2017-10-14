@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,13 +15,22 @@ namespace WireMe.Core
 {
 	public class Bootstrapper : BootstrapperBase
 	{
+		#region Consts
+
+		private readonly List<Assembly> _assemblies;
+
+		#endregion
+
 		#region Members
 
 		private SimpleContainer _simpleContainer;
+
 		#endregion
 
 		public Bootstrapper()
 		{
+			_assemblies = base.SelectAssemblies().ToList();
+
 			Initialize();
 		}
 
@@ -27,12 +38,20 @@ namespace WireMe.Core
 		{
 			_simpleContainer = new SimpleContainer();
 
-			_simpleContainer.RegisterInstance(typeof(IEventAggregator), "IEventAggregator", new EventAggregator());
-			_simpleContainer.RegisterInstance(typeof(IWindowManager), "IWindowManager", new WindowManager());
-			_simpleContainer.RegisterSingleton(typeof(ShellViewModel), "ShellViewModel", typeof(ShellViewModel));
+			try
+			{
+				_simpleContainer.RegisterInstance(typeof(IEventAggregator), "IEventAggregator", new EventAggregator());
+				_simpleContainer.RegisterInstance(typeof(IWindowManager), "IWindowManager", new WindowManager());
+				_simpleContainer.RegisterSingleton(typeof(ShellViewModel), "ShellViewModel", typeof(ShellViewModel));
 
 
-			_simpleContainer.RegisterInstance(typeof(IProjectManager), "ProjectManager", new ProjectManager());
+				_simpleContainer.RegisterInstance(typeof(IProjectManager), "ProjectManager", new ProjectManager());
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 
 			//_simpleContainer.RegisterInstance(typeof(ThemeManager), "ThemeManager", new ThemeManager());
 
@@ -49,9 +68,15 @@ namespace WireMe.Core
 		}
 
 
+
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
 			DisplayRootViewFor<ShellViewModel>();
+		}
+
+		protected override IEnumerable<Assembly> SelectAssemblies()
+		{
+			return GetAssemblies();
 		}
 
 		protected override object GetInstance(Type service, string key)
@@ -68,5 +93,43 @@ namespace WireMe.Core
 		{
 			_simpleContainer.BuildUp(instance);
 		}
+
+		#region Helpers
+		private IEnumerable<Assembly> GetAssemblies()
+		{
+			var filenames = Directory.EnumerateFiles(Environment.CurrentDirectory, "WireMe.*.dll");
+
+			foreach (var filename in filenames)
+			{
+				var assembly = Assembly.LoadFile(filename);
+
+				_assemblies.Add(assembly);
+			}
+			return _assemblies;
+		}
+
+		//private void LoadModules()
+		//{
+		//	var filenames = Directory.EnumerateFiles(Environment.CurrentDirectory, "WireMe.*.dll");
+
+		//	foreach (var filename in filenames)
+		//	{
+		//		var assembly = Assembly.LoadFile(filename);
+		//		var modules = from t in assembly.GetTypes()
+		//									where t.GetInterfaces().Contains(typeof(IModule))
+		//									select t;
+
+		//		foreach (var module in modules)
+		//		{
+		//			IModule foo = Activator.CreateInstance(module) as IModule;
+		//			if (foo != null)
+		//			{
+		//				foo.Load();
+		//			}
+		//		}
+		//	}
+		//}
+
+		#endregion
 	}
 }

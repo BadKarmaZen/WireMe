@@ -7,41 +7,47 @@ using System.Threading.Tasks;
 
 namespace WireMe.Model.Project
 {
-	public class Project
+	public class Page
 	{
 		#region Members
-		private List<Page> _pages;
+		private List<PageItem> _items;
 		#endregion
 
 
 		#region Properties
 		public string Name { get; set; }
-		public List<Page> Pages { get => _pages; set => _pages = value; }
+
+		public List<PageItem> Items
+		{
+			get { return _items; }
+			set { _items = value; }
+		}
+
 		#endregion
 
-		public Project()
+		public Page()
 		{
-			_pages = new List<Page>();
+			_items = new List<PageItem>();
 		}
 
 		#region Actions
 		public void Clear()
 		{
-			_pages = new List<Page>();
+			_items = new List<PageItem>();
 		}
 
-		public void Add(Page page)
+		public void Add(PageItem item)
 		{
-			Debug.Assert(page != null);
+			Debug.Assert(item != null);
 
-			_pages.Add(page);
+			_items.Add(item);
 		}
 
-		public void RemoveItem(Page page)
+		public void RemoveItem(PageItem item)
 		{
-			Debug.Assert(page != null);
+			Debug.Assert(item != null);
 
-			_pages.Remove(page);
+			_items.Remove(item);
 		}
 		#endregion
 

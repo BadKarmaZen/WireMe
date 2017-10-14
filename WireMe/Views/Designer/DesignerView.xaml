@@ -12,11 +12,20 @@
              d:DesignHeight="300" d:DesignWidth="300" >
 	<UserControl.Resources>
 		<ResourceDictionary>
+			
 			<DataTemplate DataType="{x:Type designer:ToolItem}" x:Key="DragTemplate">
 				<!--Margin="0,0,2,2" Padding="4"-->
 				<Border x:Name="border" Width="50" Height="20" Background="#eeeeee" BorderBrush="Gray" BorderThickness="1" >
 				</Border>
 			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type designer:CanvasItem}" x:Key="DragCanvasTemplate">
+				<!--Margin="0,0,2,2" Padding="4"-->
+				<Border x:Name="border" Width="50" Height="20" Background="Yellow" BorderBrush="Gray" BorderThickness="1" >
+				</Border>
+			</DataTemplate>
+
+
 		</ResourceDictionary>
 	</UserControl.Resources>
 	<Grid >
@@ -76,7 +85,12 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Border BorderThickness="1" BorderBrush="Blue" Background="Red"
-										Width="{Binding Width}" Height="{Binding Height}"	></Border>
+										Width="{Binding Width}" Height="{Binding Height}"
+										cal:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectItemAction($this)]">
+							<i:Interaction.Behaviors>
+								<behaviors:DragBehavior DataTemplate="{StaticResource DragCanvasTemplate}"/>
+							</i:Interaction.Behaviors>
+						</Border>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

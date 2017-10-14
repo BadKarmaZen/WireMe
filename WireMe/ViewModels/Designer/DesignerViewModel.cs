@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,44 +19,7 @@ namespace WireMe.ViewModels.Designer
 		public void Remove(object data) { }
 	}
 
-	public class CanvasItem : PropertyChangedBase
-	{
-		private double _x;
-		private double _y;
-		private double _width;
-		private double _height;
-
-		public double X
-		{
-			get { return _x; }
-			set { _x = value; NotifyOfPropertyChange(() => X); }
-		}
-
-		public double Y
-		{
-			get { return _y; }
-			set { _y = value; NotifyOfPropertyChange(() => Y); }
-		}
-
-		public double Width
-		{
-			get
-			{
-				return _width;
-			}
-
-			set
-			{
-				_width = value; NotifyOfPropertyChange(() => Width);
-			}
-		}
-
-		public double Height
-		{
-			get { return _height; }
-			set { _height = value; NotifyOfPropertyChange(() => Height); }
-		}
-	}
+	
 
 	public class DesignerViewModel : Screen, IDropable
 	{
@@ -64,8 +28,7 @@ namespace WireMe.ViewModels.Designer
 
 		private Page _currentPage;
 		#endregion
-
-
+		
 		#region Properties
 		public List<ToolItem> ToolItems
 		{
@@ -100,11 +63,17 @@ namespace WireMe.ViewModels.Designer
 
 		public DesignerViewModel()
 		{
-			DropableDataTypes = new List<Type> { typeof(ToolItem), typeof(DragWrapper) };
+			DropableDataTypes = new List<Type> { typeof(ToolItem), typeof(DragWrapper), typeof(CanvasItem) };
 			_currentPage = new Page();
 		}
 
 		#region Actions
+
+		public void SelectItemAction(CanvasItem item)
+		{
+			Debug.Assert(item != null);
+
+		}
 		#endregion
 
 

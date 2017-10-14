@@ -1,14 +1,14 @@
 ﻿#region Members
 #endregion
 
-
 #region Properties
 #endregion
 
+#region Event
+#endregion
 
 #region Actions
 #endregion
-
 
 #region Helpers
 #endregion

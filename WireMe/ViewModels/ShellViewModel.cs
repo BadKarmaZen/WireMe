@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using WireMe.Designer.ViewModels;
 using WireMe.Interfaces;
 
 namespace WireMe.ViewModels
@@ -22,13 +23,13 @@ namespace WireMe.ViewModels
 		public void NewAction()
 		{
 			IoC.Get<IProjectManager>().NewProject();
-			ActivateItem(new Designer.DesignerViewModel());
+			ActivateItem(new DesignerViewModel());
 		}
 
 		public void OpenAction()
 		{
 			IoC.Get<IProjectManager>().LoadProject();
-			ActivateItem(new Designer.DesignerViewModel() { LoadProject = true });
+			//ActivateItem(new DesignerViewModel() { LoadProject = true });
 		}
 
 		public void SaveAction()
@@ -56,7 +57,7 @@ namespace WireMe.ViewModels
 		{
 			IoC.Get<IProjectManager>().NewProject();
 
-			ActivateItem(new Designer.DesignerViewModel());
+			ActivateItem(new DesignerViewModel());
 
 			base.OnViewLoaded(view);
 		}

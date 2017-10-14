@@ -248,18 +248,19 @@ namespace WireMe.Behaviors
 			{
 				DragWrapper wrapper = _data as DragWrapper;
 
-				if (wrapper != null)
-				{
-					Debug.WriteLine($"Drop {wrapper.DragInfo.LeftOffset},{wrapper.DragInfo.TopOffset}");
-					var pw = wrapper.DragInfo.PointToScreen(new Point(wrapper.DragInfo.LeftOffset, wrapper.DragInfo.TopOffset));
+				//if (wrapper != null)
+				//{
+				//	Debug.WriteLine($"Drop {wrapper.DragInfo.LeftOffset},{wrapper.DragInfo.TopOffset}");
+				//	var pw = wrapper.DragInfo.PointToScreen(new Point(wrapper.DragInfo.LeftOffset, wrapper.DragInfo.TopOffset));
 
-					Debug.WriteLine($"-> screen :  {pw}");
-					var pc = _uiElement.PointToScreen(new Point(0,0));
-					Debug.WriteLine($"-> canvas :  {pc}");
+				//	Debug.WriteLine($"-> screen :  {pw}");
+				//	var pc = _uiElement.PointToScreen(new Point(0,0));
+				//	Debug.WriteLine($"-> canvas :  {pc}");
 
-					GetDropable().Drop(wrapper.Item, _target, new Point(wrapper.DragInfo.LeftOffset-100, wrapper.DragInfo.TopOffset));
-				}
-				else
+				//	GetDropable().Drop(wrapper.Item, _target, new Point(wrapper.DragInfo.LeftOffset-100, wrapper.DragInfo.TopOffset));
+				/////	GetDropable().Drop(_data, _target, _last);
+				//}
+				//else
 				{
 					GetDropable().Drop(_data, _target, _last);
 				}
